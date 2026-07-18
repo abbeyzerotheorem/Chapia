@@ -8,8 +8,8 @@
 @tailwind utilities;
 
 /* ===========================================
-/* Custom Scrollbar Styles
-/* ===========================================
+   Custom Scrollbar Styles
+   =========================================== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -31,8 +31,8 @@
 }
 
 /* ===========================================
-/* Custom Scrollbar for Dark Mode
-/* ===========================================
+   Custom Scrollbar for Dark Mode
+   =========================================== */
 .dark ::-webkit-scrollbar-track {
   background: hsl(var(--background));
 }
@@ -42,8 +42,8 @@
 }
 
 /* ===========================================
-/* WhatsApp-inspired Chat Bubble Styles
-/* ===========================================
+   WhatsApp-inspired Chat Bubble Styles
+   =========================================== */
 .whatsapp-bubble {
   @apply rounded-lg px-4 py-2 max-w-xs break-words;
 }
@@ -59,8 +59,8 @@
 }
 
 /* ===========================================
-/* Pulse Animation for Notifications
-/* ===========================================
+   Pulse Animation for Notifications
+   =========================================== */
 @keyframes pulse-custom {
   0%, 100% {
     opacity: 1;
@@ -75,8 +75,8 @@
 }
 
 /* ===========================================
-/* Fade-in Animation
-/* ===========================================
+   Fade-in Animation
+   =========================================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -93,8 +93,8 @@
 }
 
 /* ===========================================
-/* Bounce Animation
-/* ===========================================
+   Bounce Animation
+   =========================================== */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -112,15 +112,15 @@
 }
 
 /* ===========================================
-/* Gradient Background
-/* ===========================================
+   Gradient Background
+   =========================================== */
 .gradient-bg {
   background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
 }
 
 /* ===========================================
-/* Card Styles with Shadow
-/* ===========================================
+   Card Styles with Shadow
+   =========================================== */
 .card {
   @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700;
 }
@@ -130,8 +130,8 @@
 }
 
 /* ===========================================
-/* Button Styles
-/* ===========================================
+   Button Styles
+   =========================================== */
 .btn {
   @apply inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
 }
@@ -161,8 +161,8 @@
 }
 
 /* ===========================================
-/* Input Styles
-/* ===========================================
+   Input Styles
+   =========================================== */
 .input {
   @apply flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm;
   @apply transition-colors file:border-none file:bg-transparent file:text-sm file:font-medium;
@@ -174,8 +174,8 @@
 }
 
 /* ===========================================
-/* WhatsApp Green Styles
-/* ===========================================
+   WhatsApp Green Styles
+   =========================================== */
 .whatsapp-green {
   @apply bg-green-500 hover:bg-green-600 text-white;
 }
@@ -185,8 +185,8 @@
 }
 
 /* ===========================================
-/* African Color Variants
-/* ===========================================
+   African Color Variants
+   =========================================== */
 .kente-blue-text {
   @apply text-kente-blue-DEFAULT;
 }
@@ -208,8 +208,8 @@
 }
 
 /* ===========================================
-/* Responsive Utilities
-/* ===========================================
+   Responsive Utilities
+   =========================================== */
 @media (max-width: 768px) {
   .hidden-sm {
     @apply hidden;
@@ -231,15 +231,15 @@
 }
 
 /* ===========================================
-/* Loading Spinner
-/* ===========================================
+   Loading Spinner
+   =========================================== */
 .loading-spinner {
   @apply animate-spin rounded-full border-2 border-t-transparent border-africa-primary border-solid;
 }
 
 /* ===========================================
-/* Skeleton Loader
-/* ===========================================
+   Skeleton Loader
+   =========================================== */
 .skeleton {
   @apply bg-gray-200 dark:bg-gray-700 rounded;
   @apply animate-pulse;
@@ -251,8 +251,8 @@
 }
 
 /* ===========================================
-/* Text Utilities
-/* ===========================================
+   Text Utilities
+   =========================================== */
 .text-truncate {
   @apply overflow-hidden text-overflow-ellipsis whitespace-nowrap;
 }
@@ -262,8 +262,8 @@
 }
 
 /* ===========================================
-/* Grid Utilities
-/* ===========================================
+   Grid Utilities
+   =========================================== */
 .grid-cols-2 {
   @apply grid grid-cols-2 gap-4;
 }
@@ -281,8 +281,8 @@
 }
 
 /* ===========================================
-/* Flex Utilities
-/* ===========================================
+   Flex Utilities
+   =========================================== */
 .flex-wrap {
   @apply flex flex-wrap;
 }
