@@ -20,6 +20,7 @@ const publicRoutes = [
   '/auth/reset-password',
   '/api/auth',
   '/api/webhooks',
+  '/api/health',
   '/_next',
   '/favicon.ico',
   '/og-image.png',
