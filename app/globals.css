@@ -1,0 +1,312 @@
+/**
+ * Global Styles for WhatsApp Sales AI SaaS Platform
+ * African-inspired design system with WhatsApp integration
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================
+/* Custom Scrollbar Styles
+/* ===========================================
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 8px;
+  border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary-600));
+}
+
+/* ===========================================
+/* Custom Scrollbar for Dark Mode
+/* ===========================================
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary-500));
+}
+
+/* ===========================================
+/* WhatsApp-inspired Chat Bubble Styles
+/* ===========================================
+.whatsapp-bubble {
+  @apply rounded-lg px-4 py-2 max-w-xs break-words;
+}
+
+.whatsapp-bubble.incoming {
+  @apply bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700;
+  @apply rounded-l-lg;
+}
+
+.whatsapp-bubble.outgoing {
+  @apply bg-africa-primary text-white;
+  @apply rounded-r-lg;
+}
+
+/* ===========================================
+/* Pulse Animation for Notifications
+/* ===========================================
+@keyframes pulse-custom {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse-animation {
+  animation: pulse-custom 2s ease-in-out infinite;
+}
+
+/* ===========================================
+/* Fade-in Animation
+/* ===========================================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===========================================
+/* Bounce Animation
+/* ===========================================
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.bounce-in {
+  animation: bounce 0.6s ease;
+}
+
+/* ===========================================
+/* Gradient Background
+/* ===========================================
+.gradient-bg {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+}
+
+/* ===========================================
+/* Card Styles with Shadow
+/* ===========================================
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700;
+}
+
+.card-hover {
+  @apply transition-shadow duration-300 hover:shadow-xl;
+}
+
+/* ===========================================
+/* Button Styles
+/* ===========================================
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+
+.btn-primary {
+  @apply bg-africa-primary text-white hover:bg-africa-primary/90;
+  @apply shadow-sm hover:shadow-md;
+}
+
+.btn-secondary {
+  @apply bg-africa-secondary text-white hover:bg-africa-secondary/90;
+  @apply shadow-sm hover:shadow-md;
+}
+
+.btn-outline {
+  @apply border border-africa-primary text-africa-primary hover:bg-africa-primary/10;
+}
+
+.btn-success {
+  @apply bg-africa-accent text-white hover:bg-africa-accent/90;
+  @apply shadow-sm hover:shadow-md;
+}
+
+.btn-destructive {
+  @apply bg-red-600 text-white hover:bg-red-600/90;
+  @apply shadow-sm hover:shadow-md;
+}
+
+/* ===========================================
+/* Input Styles
+/* ===========================================
+.input {
+  @apply flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm;
+  @apply transition-colors file:border-none file:bg-transparent file:text-sm file:font-medium;
+  @apply placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.input:focus {
+  @apply ring-2 ring-africa-primary;
+}
+
+/* ===========================================
+/* WhatsApp Green Styles
+/* ===========================================
+.whatsapp-green {
+  @apply bg-green-500 hover:bg-green-600 text-white;
+}
+
+.whatsapp-green-border {
+  @apply border-green-500 text-green-500 hover:bg-green-500/10;
+}
+
+/* ===========================================
+/* African Color Variants
+/* ===========================================
+.kente-blue-text {
+  @apply text-kente-blue-DEFAULT;
+}
+
+.kente-gold-bg {
+  @apply bg-kente-gold-DEFAULT;
+}
+
+.kente-red-text {
+  @apply text-kente-red-DEFAULT;
+}
+
+.kente-green-text {
+  @apply text-kente-green-DEFAULT;
+}
+
+.earth-terracotta-bg {
+  @apply bg-earth-terracotta-DEFAULT;
+}
+
+/* ===========================================
+/* Responsive Utilities
+/* ===========================================
+@media (max-width: 768px) {
+  .hidden-sm {
+    @apply hidden;
+  }
+
+  .block-sm {
+    @apply block;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-md {
+    @apply hidden;
+  }
+
+  .block-md {
+    @apply block;
+  }
+}
+
+/* ===========================================
+/* Loading Spinner
+/* ===========================================
+.loading-spinner {
+  @apply animate-spin rounded-full border-2 border-t-transparent border-africa-primary border-solid;
+}
+
+/* ===========================================
+/* Skeleton Loader
+/* ===========================================
+.skeleton {
+  @apply bg-gray-200 dark:bg-gray-700 rounded;
+  @apply animate-pulse;
+}
+
+.skeleton-circle {
+  @apply bg-gray-200 dark:bg-gray-700 rounded-full;
+  @apply animate-pulse;
+}
+
+/* ===========================================
+/* Text Utilities
+/* ===========================================
+.text-truncate {
+  @apply overflow-hidden text-overflow-ellipsis whitespace-nowrap;
+}
+
+.text-ellipsis {
+  @apply overflow-hidden text-overflow-ellipsis;
+}
+
+/* ===========================================
+/* Grid Utilities
+/* ===========================================
+.grid-cols-2 {
+  @apply grid grid-cols-2 gap-4;
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    @apply grid grid-cols-2 gap-4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    @apply grid grid-cols-3 gap-6;
+  }
+}
+
+/* ===========================================
+/* Flex Utilities
+/* ===========================================
+.flex-wrap {
+  @apply flex flex-wrap;
+}
+
+.justify-between {
+  @apply justify-between;
+}
+
+.justify-center {
+  @apply justify-center;
+}
+
+.items-center {
+  @apply items-center;
+}
+
+.items-start {
+  @apply items-start;
+}
+
+.gap-4 {
+  @apply gap-4;
+}
+
+.gap-6 {
+  @apply gap-6;
+}

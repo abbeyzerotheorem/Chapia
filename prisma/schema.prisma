@@ -1,0 +1,495 @@
+// Prisma Schema for WhatsApp Sales AI SaaS Platform
+// Designed for African SMEs with multi-tenant support
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  phone             String?     @unique
+  password          String?
+  name              String?
+  avatar            String?
+  role              UserRole    @default(USER)
+  status            UserStatus  @default(ACTIVE)
+  emailVerified     DateTime?
+  image             String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  lastLoginAt       DateTime?
+  timezone          String      @default("Africa/Lagos")
+
+  accounts          Account[]
+  sessions          Session[]
+  businesses        Business[]
+  products          Product[]
+  orders            Order[]
+  customers         Customer[]
+  whatsappMessages  WhatsAppMessage[]
+  analytics         Analytics[]
+  notifications     Notification[]
+  calls             Call[]
+  templates         Template[]
+}
+
+model Business {
+  id                    String        @id @default(cuid())
+  name                  String
+  slug                  String        @unique
+  description           String?
+  industry              Industry?
+  currency              Currency      @default(NGN)
+  timezone              String        @default("Africa/Lagos")
+  ownerId               String
+  subscriptionPlan    SubscriptionPlan @default(FREE)
+  subscriptionStatus  SubscriptionStatus @default(ACTIVE)
+  subscriptionExpires DateTime?
+  webhookUrl            String?
+  whatsappNumber        String?
+  whatsappPhoneNumberId String?   @map("whatsapp_phone_number_id")
+  whatsappAccessToken   String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  owner                 User          @relation(fields: [ownerId], references: [id])
+  products              Product[]
+  orders                Order[]
+  customers             Customer[]
+  whatsappMessages      WhatsAppMessage[]
+  templates             Template[]
+  analytics             Analytics[]
+  notifications         Notification[]
+  calls                 Call[]
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String
+  description     String?
+  price           Float
+  compareAtPrice  Float?
+  sku             String?       @unique
+  barcode         String?
+  inventory       Int           @default(0)
+  lowStockThreshold Int         @default(10)
+  weight          Float?
+  dimensions      String?
+  imageUrl        String?
+  category        String?
+  tags            String[]
+  status          ProductStatus @default(ACTIVE)
+  businessId      String
+  createdById     String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  business        Business      @relation(fields: [businessId], references: [id])
+  createdBy       User          @relation(fields: [createdById], references: [id])
+  orderItems      OrderItem[]
+}
+
+model Customer {
+  id              String        @id @default(cuid())
+  name            String
+  email           String?
+  phone           String?       @unique
+  whatsappNumber  String?       @unique
+  avatar          String?
+  address         String?
+  city            String?
+  state           String?
+  country         Country       @default(NG)
+  currency        Currency      @default(NGN)
+  totalSpent      Float         @default(0)
+  totalOrders     Int           @default(0)
+  lastOrderAt     DateTime?
+  tags            String[]
+  status          CustomerStatus @default(ACTIVE)
+  businessId      String
+  createdById     String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  business        Business      @relation(fields: [businessId], references: [id])
+  createdBy       User          @relation(fields: [createdById], references: [id])
+  orders          Order[]
+  whatsappMessages WhatsAppMessage[]
+  calls           Call[]
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique
+  status          OrderStatus   @default(PENDING)
+  total           Float
+  subtotal        Float
+  tax             Float         @default(0)
+  shipping        Float         @default(0)
+  discount        Float         @default(0)
+  currency        Currency      @default(NGN)
+  paymentMethod   PaymentMethod @default(WHATSAPP_PAY)
+  paymentStatus   PaymentStatus @default(PENDING)
+  trackingNumber  String?
+  notes           String?
+  businessId      String
+  customerId      String
+  createdById     String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  business        Business      @relation(fields: [businessId], references: [id])
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  createdBy       User          @relation(fields: [createdById], references: [id])
+  items           OrderItem[]
+  whatsappMessages WhatsAppMessage[]
+}
+
+model OrderItem {
+  id          String    @id @default(cuid())
+  orderId     String
+  productId String
+  quantity    Int
+  price       Float
+  total       Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  order       Order     @relation(fields: [orderId], references: [id])
+  product     Product   @relation(fields: [productId], references: [id])
+}
+
+model WhatsAppMessage {
+  id              String        @id @default(cuid())
+  messageId       String?       @unique
+  direction       MessageDirection
+  from            String
+  to              String
+  content         String
+  messageType     MessageType   @default(TEXT)
+  mediaUrl        String?
+  status          MessageStatus @default(SENT)
+  orderId         String?
+  businessId      String
+  customerId      String
+  userId          String
+  sentAt          DateTime      @default(now())
+  deliveredAt     DateTime?
+  readAt          DateTime?
+
+  business        Business      @relation(fields: [businessId], references: [id])
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+  order           Order?        @relation(fields: [orderId], references: [id])
+}
+
+model Template {
+  id              String    @id @default(cuid())
+  name            String
+  category        TemplateCategory
+  subject         String?
+  content         String
+  variables       String[]  @default([])
+  isDefault       Boolean   @default(false)
+  businessId      String
+  createdById     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  business        Business  @relation(fields: [businessId], references: [id])
+  createdBy       User      @relation(fields: [createdById], references: [id])
+}
+
+model Analytics {
+  id              String    @id @default(cuid())
+  businessId      String
+  userId          String
+  metricType      MetricType
+  period          Period
+  value           Float
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+
+  business        Business  @relation(fields: [businessId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+}
+
+model Call {
+  id              String    @id @default(cuid())
+  callId          String    @unique
+  direction       CallDirection
+  from            String
+  to              String
+  duration        Int       @default(0)
+  status          CallStatus @default(COMPLETED)
+  recordingUrl    String?
+  transcript      String?
+  businessId      String
+  customerId      String
+  userId          String
+  createdAt       DateTime  @default(now())
+
+  business        Business  @relation(fields: [businessId], references: [id])
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id              String    @id @default(cuid())
+  title           String
+  message         String
+  type            NotificationType @default(INFO)
+  read            Boolean   @default(false)
+  businessId      String
+  userId          String
+  createdAt       DateTime  @default(now())
+
+  business        Business  @relation(fields: [businessId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+}
+
+// Authentication models
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Enums
+enum UserRole {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum BusinessStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
+}
+
+enum Industry {
+  RETAIL
+  WHOLESALE
+  SERVICES
+  MANUFACTURING
+  AGRICULTURE
+  TOBACCO
+  OTHER
+}
+
+enum Currency {
+  NGN
+  KES
+  GHS
+  ZAR
+  UGX
+  TZS
+  WALLET
+}
+
+enum Country {
+  NG
+  KE
+  GH
+  ZA
+  UG
+  TZ
+  OTHER
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+  DRAFT
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  COMPLETED
+}
+
+enum PaymentMethod {
+  CASH
+  MOBILE_MONEY
+  BANK_TRANSFER
+  CREDIT_CARD
+  WHATSAPP_PAY
+  PAYPAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum MessageDirection {
+  INCOMING
+  OUTGOING
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  STICKER
+  REACTION
+  LOCATION
+  CONTACT
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  PENDING
+}
+
+enum TemplateCategory {
+  ORDER_CONFIRMATION
+  ORDER_SHIPMENT
+  ORDER_DELIVERY
+  REMINDER
+  PROMOTIONAL
+  CUSTOM
+}
+
+enum MetricType {
+  REVENUE
+  ORDERS
+  CUSTOMERS
+  CONVERSIONS
+  MESSAGES_SENT
+  MESSAGES_DELIVERED
+  MESSAGES_READ
+  CALL_DURATION
+  CONVERSION_RATE
+}
+
+enum Period {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum CallDirection {
+  INCOMING
+  OUTGOING
+}
+
+enum CallStatus {
+  COMPLETED
+  MISSED
+  BUSY
+  FAILED
+  REJECTED
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  ORDER_UPDATE
+  PAYMENT_UPDATE
+  SYSTEM
+}
+
+// Support enums
+enum SupportTicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum SupportTicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum SupportTicketSource {
+  EMAIL
+  WHATSAPP
+  LIVE_CHAT
+  PHONE
+  OTHER
+}
